@@ -16,16 +16,24 @@ maze = [
 ]
 
 
-def print_maze(maze, stdscr, path=[]):
+def print_maze(maze, stdscr, finished, path=[]):
     BLUE = curses.color_pair(1)
     RED = curses.color_pair(2)
-
-    for i, row in enumerate(maze):
-        for j, value in enumerate(row):
-            if (i, j) in path:
-                stdscr.addstr(i, j*2, "X", RED)
-            else:
-                stdscr.addstr(i, j*2, value, BLUE)
+    GREEN = curses.color_pair(3)
+    if not finished:
+        for i, row in enumerate(maze):
+            for j, value in enumerate(row):
+                if (i, j) in path:
+                    stdscr.addstr(i, j*2, ".", RED)
+                else:
+                    stdscr.addstr(i, j*2, value, BLUE)
+    else:
+        for i, row in enumerate(maze):
+            for j, value in enumerate(row):
+                if (i,j) in path:
+                    stdscr.addstr(i, j*2, ".", GREEN)
+                else:
+                    stdscr.addstr(i, j*2, value, BLUE)
 
 
 def find_start(maze, start):
@@ -52,11 +60,14 @@ def find_path(maze, stdscr):
         row, col = current_pos
 
         stdscr.clear()
-        print_maze(maze, stdscr, path)
+        print_maze(maze, stdscr, False, path)
         time.sleep(0.2)
         stdscr.refresh()
 
         if maze[row][col] == end:
+            stdscr.clear()
+            print_maze(maze, stdscr, True, path)
+            stdscr.refresh()
             return path
 
         neighbors = find_neighbors(maze, row, col)
@@ -91,6 +102,7 @@ def find_neighbors(maze, row, col):
 def main(stdscr):
     curses.init_pair(1, curses.COLOR_BLUE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
 
     find_path(maze, stdscr)
     stdscr.getch()
