@@ -4,7 +4,7 @@ from queue import PriorityQueue
 
 WIDTH = 800
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-pygame.display.set_caption("A* Path Finding Algorithm")
+pygame.display.set_caption("A* PathFinding Algorithm - First click sets the start point, second click sets the end point, press space to start")
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
